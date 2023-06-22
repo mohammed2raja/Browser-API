@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8">
+    <script>function init() {
+  // Check if the Payment Request API is available in the browser
+  if (window.PaymentRequest) {
+    var supportedPaymentMethods = [{
+      supportedMethods: 'basic-card',
+      data: {
+        supportedNetworks: ['visa', 'mastercard', 'amex'],
+        // Supported card networks
+        supportedTypes: ['credit', 'debit'] // Supported card types
+      }
+    }];
+
+    var paymentDetails = {
+      total: {
+        label: 'Total Amount',
+        amount: {
+          currency: 'USD',
+          value: '10.00'
+        }
+      }
+    };
+    var paymentOptions = {
+      requestPayerName: true,
+      requestPayerEmail: true
+    };
+    var paymentRequest = new PaymentRequest(supportedPaymentMethods, paymentDetails, paymentOptions);
+
+    // Handle the user's payment response
+    paymentRequest.show().then(function (paymentResponse) {
+      // Process the payment response
+      // Here you can send the payment details to your server for further processing
+
+      // Complete the payment
+      return paymentResponse.complete().then(function () {
+        // Payment was successful
+        alert('Payment successful!');
+      });
+    }).catch(function (error) {
+      // Payment request was canceled or an error occurred
+      console.error('Payment request error:', error);
+    });
+  } else {
+    // Payment Request API is not supported in the browser
+    console.error('Payment Request API is not supported.');
+  }
+}</script>
+  </head>
+
+  <body>
+    <button onclick="init()">Click me</button>
+
+    <p id="demo"></p>
+
+    <script>function myFunction() {
+  document.getElementById("demo").innerHTML = "Hello World";
+}</script>
+  </body>
+</html>

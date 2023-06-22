@@ -5,63 +5,61 @@
     <meta charset="UTF-8" />
     <script>
       function init() {
-        // Check if the Payment Request API is available in the browser
-        if (window.PaymentRequest) {
-          const supportedPaymentMethods = [
-            {
-              supportedMethods: "basic-card"
-            },
-            {
-              supportedMethods: "https://google.com/pay",
-              data: {
-                environment: "TEST",
-                merchantId: "your-merchant-id"
-              }
-            }
-          ];
+       // Check if the Payment Request API is available in the browser
+if (window.PaymentRequest) {
+  const supportedPaymentMethods = [
+    {
+  supportedMethods: 'basic-card',
+  data: {
+    supportedNetworks: ['visa', 'mastercard', 'amex'], // Supported card networks
+    supportedTypes: ['credit', 'debit'] // Supported card types
+  }
+}
+  ];
 
-          const paymentDetails = {
-            total: {
-              label: "Total Amount",
-              amount: {
-                currency: "USD",
-                value: "10.00"
-              }
-            }
-          };
+  const paymentDetails = {
+    total: {
+      label: 'Total Amount',
+      amount: {
+        currency: 'USD',
+        value: '10.00',
+      },
+    },
+  };
 
-          const paymentOptions = {
-            requestPayerName: true,
-            requestPayerEmail: true
-          };
+  const paymentOptions = {
+    requestPayerName: true,
+    requestPayerEmail: true,
+  };
 
-          const paymentRequest = new PaymentRequest(
-            supportedPaymentMethods,
-            paymentDetails,
-            paymentOptions
-          );
+  const paymentRequest = new PaymentRequest(
+    supportedPaymentMethods,
+    paymentDetails,
+    paymentOptions
+  );
 
-          // Handle the user's payment response
-          paymentRequest
-            .show()
-            .then((paymentResponse) => {
-              // Process the payment response
-              // Here you can send the payment details to your server for further processing
+  // Handle the user's payment response
+  paymentRequest.show()
+    .then((paymentResponse) => {
+      // Process the payment response
+      // Here you can send the payment details to your server for further processing
 
-              // Complete the payment
-              return paymentResponse.complete().then(() => {
-                // Payment was successful
-                alert("Payment successful!");
-              });
-            })
-            .catch((error) => {
-              // Payment request was canceled or an error occurred
-              console.error("Payment request error:", error);
-            });
-        } else {
-          // Payment Request API is not supported in the browser
-          console.error("Payment Request API is not supported.");
-        }
+      // Complete the payment
+      return paymentResponse.complete()
+        .then(() => {
+          // Payment was successful
+          alert('Payment successful!');
+        });
+    })
+    .catch((error) => {
+      // Payment request was canceled or an error occurred
+      console.error('Payment request error:', error);
+    });
+} else {
+  // Payment Request API is not supported in the browser
+  console.error('Payment Request API is not supported.');
+}
+
       }
     </script>
   </head>
